@@ -1,0 +1,15 @@
+---
+- hosts: test
+  remote_user: root
+  vars:
+    http_port: 80
+    domain: devops.test.com
+  tasks:
+    - name: login to my private registry
+      shell:  "docker login https://myregistry.com -u abdullrahman -p abdullrahman"
+
+    - name: pull the latest app image
+      shell: "docker pull myregistry.com/vodafone-demo2"
+
+    - name: run the container and start the app
+      shell: "docker run -id -p {{ http_port }}:3000 myregistry.com/vodafone-demo2"
