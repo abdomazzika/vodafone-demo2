@@ -7,10 +7,10 @@
     image_name: myregistry.com/vodafone-demo2
   tasks:
     - name: stop the current containers based on image which our app build from
-      shell: "if [ -n '$(docker ps | grep '{{ image_name }}' | awk '{print $1}')' ]; then docker rm -f $(docker ps | grep '{{ image_name }}' | awk '{print $1}'); fi"
+      shell: "if [[ $(docker ps | grep '{{ image_name }}' | awk '{print $1}') ]]; then docker rm -f $(docker ps | grep '{{ image_name }}' | awk '{print $1}'); fi"
 
     - name: remove the old app images
-      shell: "if [ -n '$(docker images -q {{ image_name }})' ]; then docker rmi -f $(docker images -q {{ image_name }}); fi"
+      shell: "if [[ $(docker images -q {{ image_name }}) ]]; then docker rmi -f $(docker images -q {{ image_name }}); fi"
 
     - name: login to my private registry
       shell:  "docker login https://myregistry.com -u abdullrahman -p abdullrahman"
