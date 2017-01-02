@@ -1,0 +1,43 @@
+---
+- hosts: test
+  remote_user: root
+  vars:
+    http_port: 80
+    domain: devops.test.com
+    image_name: myregistry.com/vodafone-demo2
+  tasks:
+    - name: stop the current containers based on image_name  which our app build from
+      shell: "if [[ $(docker ps | grep 'myregistry.com/vodafone-demo2' | awk '{print $1}') ]]; then docker rm -f $(docker ps | grep 'myregistry.com/vodafone-demo2' | awk '{print $1}'); fi"
+
+    - name: sleeeeeeeeeeeeeeeeep
+      shell: "sleep 15;"
+
+    - name: stop the current containers based on image_id which our app build from
+      shell: "for image_id in `docker images -q myregistry.com/vodafone-demo2`; do if [[ $(docker ps | grep $image_id | awk '{print $1}') ]]; then docker rm -f $(docker ps| grep $image_id | awk '{print $1}'); fi; done"
+
+    - name: sleeeeeeeeeeeeeeeeep
+      shell: "sleep 15;"
+
+    - name: remove the old app images
+      shell: "if [[ $(docker images -q myregistry.com/vodafone-demo2) ]]; then docker rmi -f $(docker images -q myregistry.com/vodafone-demo2); fi"
+
+    - name: sleeeeeeeeeeeeeeeeep
+      shell: "sleep 15;"
+
+    - name: login to my private registry
+      shell:  "docker login https://myregistry.com -u abdullrahman -p abdullrahman"
+
+    - name: sleeeeeeeeeeeeeeeeep
+      shell: "sleep 15;"
+
+    - name: pull the latest app image
+      shell: "docker pull myregistry.com/vodafone-demo2"
+
+    - name: sleeeeeeeeeeeeeeeeep
+      shell: "sleep 15;"
+
+    - name: run the container and start the app
+      shell: "docker run -id -p myregistry.com/vodafone-demo2:3000 myregistry.com/vodafone-demo2"
+
+    - name: sleeeeeeeeeeeeeeeeep
+      shell: "sleep 15;"
