@@ -4,12 +4,19 @@
   vars:
     http_port: 80
     domain: devops.test.com
+    image_name: myregistry.com/vodafone-demo2
   tasks:
+    - name: stop the current containers based on image which our app build from
+      shell: "docker rm -f $(docker ps | grep '{{ image_name }}' | awk '{print $1}')"
+
+    - name: remove the old app images
+      shell: "docker rmi -f $(docker images -q {{ image_name }})"
+
     - name: login to my private registry
       shell:  "docker login https://myregistry.com -u abdullrahman -p abdullrahman"
 
     - name: pull the latest app image
-      shell: "docker pull myregistry.com/vodafone-demo2"
+      shell: "docker pull {{ image_name }}"
 
     - name: run the container and start the app
-      shell: "docker run -id -p {{ http_port }}:3000 myregistry.com/vodafone-demo2"
+      shell: "docker run -id -p {{ http_port }}:3000 {{ image_name }}"
