@@ -19,7 +19,7 @@
       shell:  "docker login https://myregistry.com -u abdullrahman -p abdullrahman"
 
     - name: pull the latest app image
-      shell: "docker pull {{ image_name }}"
+      shell: "docker pull {{ image_name }}:latest"
 
     - name: run the container and start the app
-      shell: "docker run -id -p {{ http_port }}:3000 {{ image_name }}"
+      shell: "docker run -id -p {{ http_port }}:3000 {{ image_name }}:latest"
