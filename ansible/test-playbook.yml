@@ -10,7 +10,7 @@
       shell: "if [[ $(docker ps | grep '{{ image_name }}' | awk '{print $1}') ]]; then docker rm -f $(docker ps | grep '{{ image_name }}' | awk '{print $1}'); fi"
 
     - name: stop the current containers based on image_id which our app build from
-      shell: "for image_id in `docker images -q myregistry.com/vodafone-demo2`; do if [[ $(docker ps | grep $image_id | awk '{print $1}') ]]; then docker rm -f $(docker ps| grep $image_id | awk '{print $1}'); fi; done"
+      shell: "for image_id in `docker images -q {{ image_name }}`; do if [[ $(docker ps | grep $image_id | awk '{print $1}') ]]; then docker rm -f $(docker ps| grep $image_id | awk '{print $1}'); fi; done"
 
     - name: remove the old app images
       shell: "if [[ $(docker images -q {{ image_name }}) ]]; then docker rmi -f $(docker images -q {{ image_name }}); fi"
@@ -19,7 +19,7 @@
       shell:  "docker login https://myregistry.com -u abdullrahman -p abdullrahman"
 
     - name: pull the latest app image
-      shell: "docker pull {{ image_name }}:latest"
+      shell: "docker pull {{ image_name }}"
 
     - name: run the container and start the app
-      shell: "docker run -id -p {{ http_port }}:3000 {{ image_name }}:latest"
+      shell: "docker run -id -p {{ http_port }}:3000 {{ image_name }}"
